@@ -85,3 +85,14 @@ steps:
   inputs:
     command: logout
     containerRegistry: $(dockerRegistryServiceConnection)
+
+- task: KubernetesManifest@0
+  inputs:
+    action: 'deploy'
+    kubernetesServiceConnection: $(k8sServiceConnection)
+    namespace: $(k8sNamespace)
+    # $(System.ArtifactsDirectory) ==> /home/vsts/work/1/a/ on server
+    manifests: |
+      manifests/*.yaml
+    containers: $(containerRegistry)/$(imageRepository):$(tag)
+    imagePullSecrets: $(k8sImagePullSecrets)

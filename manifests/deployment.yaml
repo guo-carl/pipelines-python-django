@@ -1,0 +1,21 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: python-django-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: python-django
+  template:
+    metadata:
+      labels:
+        app: python-django
+    spec:
+      containers:
+        - name: python-django-deploy
+          image: evuedsoacr.azurecr.io/ava/guoyang/test/test-python-django
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8000
+      serviceAccountName: pipeline-deploy
